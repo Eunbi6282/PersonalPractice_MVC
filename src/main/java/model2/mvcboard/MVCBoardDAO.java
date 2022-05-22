@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.crypto.interfaces.DHPublicKey;
+
 import common.DBConnPool;
 
 public class MVCBoardDAO extends DBConnPool{
@@ -16,9 +18,9 @@ public class MVCBoardDAO extends DBConnPool{
 	public int selectCount (Map <String, Object> map) {
 		int totalCount = 0;
 		String query = "SELECT COUNT(*) FROM pebboard";	// 레코드의 총 개수 반환
-		if(map.get("searchWord") != null)  {  //T(String)에 searchWord가 있을 때 where값을 추가로 쿼리에 넣는다.
-			query += " Where " + map.get("searchFiled") + " " + "like '%" + map.get("searchWord") + "%'";
-		}
+			if(map.get("searchWord") != null)  {  //T(String)에 searchWord가 있을 때 where값을 추가로 쿼리에 넣는다.
+				query += " Where " + map.get("searchField") + " " + "like '%" + map.get("searchWord") + "%'";
+			}
 		
 		try {
 			stmt = con.createStatement();
@@ -43,7 +45,7 @@ public class MVCBoardDAO extends DBConnPool{
 				+ "		SELECT Tb.*, ROWNUM rNUM FROM ( "
 				+ " 		SELECT * FROM pebboard ";
 		
-		if(map.get("searhWord") != null) {
+		if(map.get("searchWord") != null) {
 			query += " WHERE " + map.get("searchField")
 				+ " LIKE '%" + map.get("searchWord") + "%'";
 		}
@@ -86,9 +88,55 @@ public class MVCBoardDAO extends DBConnPool{
 	
 	// 목록 검색 (select ) : 주어진 일련번호에 해당하는 값을 DTO에 담아 변환 (한 페이지 read)
 		//ViewController에서 요청 처리 /idx값으로 select
+	public MVCBoardDTO selectView(String idx) {
+		MVCBoardDTO dto = new MVCBoardDTO();
+		String query = "SELECT * FROM pebboard WHERE idx = ?";
+		
+		try {
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, idx);
+			rs = psmt.executeQuery();
+			
+			if (rs.next()) {
+				// rs (select)의 결과물을 set을 이용해서 값 주입
+				dto.setIdx(rs.getString(1));	// 1번 컬럼
+				dto.setName(rs.getString(2));
+				dto.setTitle(rs.getString(3));
+				dto.setContent(rs.getString(4));
+				dto.setPostdate(rs.getDate(5));
+				dto.setOfile(rs.getString(6));
+				dto.setSfile(rs.getString(7));
+				dto.setDowncount(rs.getInt(8));
+				dto.setPass(rs.getString(9));
+				dto.setVisitcount(rs.getInt(10));
+			}
+		} catch (Exception e) {
+			System.out.println("게시물 상세정보 출력시 예외발생");
+			e.printStackTrace();
+		}
+		return dto;
+	}
+	
+	// 주어진 일련번호에 해당하는 게시물의 조회수를 1증가시킴
+	public void updateVisitCount (String idx) {
+		String query = "UPDATE pebboard SET "
+				+ " visitcount = visitcount + 1"
+				+ " WHERE idx = ?";
+		
+		try {
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, idx);
+			rs = psmt.executeQuery();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("게시물 조회수 증가시 예외 발생");
+		}
+	}
 		
 		
-		
+	
+	
+	
 		
 		
 		

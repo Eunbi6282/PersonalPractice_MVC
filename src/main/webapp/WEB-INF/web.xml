@@ -99,6 +99,7 @@
 	</context-param>
 	
 	<!-- MVCboard 글 내용보기 Controller 매핑 설정-->
+	<!-- 
 	<servlet>
 		<servlet-name>MVCBoardView</servlet-name>
 		<servlet-class>model2.mvcboard.ViewController</servlet-class>
@@ -107,6 +108,7 @@
 		<servlet-name>MVCBoardView</servlet-name>
 		<url-pattern>/mvc_board/view.do</url-pattern>
 	</servlet-mapping>
+	-->
 	
 	<!-- MVCboard 글 수정,삭제 Controller 매핑 설정-->
 	<servlet>

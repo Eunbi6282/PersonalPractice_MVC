@@ -24,11 +24,11 @@ public class ListController extends HttpServlet{
 		
 		// 2. 뷰에 전달할 매개변수 저장용 맵 생성 (Key, Value)
 		Map<String, Object> map = new HashMap <String, Object>();
-		String searchFiled = req.getParameter("seachFiled");
+		String searchFiled = req.getParameter("searchField");
 		String searchWord = req.getParameter("searchWord");
 		
 		if (searchWord != null) {
-			map.put("searchFiled", searchFiled);
+			map.put("searchField", searchFiled);
 			map.put("searchWord", searchWord);
 		}
 		
