@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import javax.crypto.interfaces.DHPublicKey;
 
 import common.DBConnPool;
 
@@ -133,7 +132,14 @@ public class MVCBoardDAO extends DBConnPool{
 		}
 	}
 		
+	// 비밀번호 확인 메서드 (입력한 비밀번호가 DB의 값과 일치하는 지 확인)
+	public boolean confirmPassword (String pass, String idx) {
+		boolean isCorr = true;
 		
+		
+		
+		return isCorr;
+	}
 	
 	
 	
