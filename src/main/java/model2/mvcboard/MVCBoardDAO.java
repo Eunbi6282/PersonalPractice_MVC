@@ -1,5 +1,6 @@
 package model2.mvcboard;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -133,11 +134,28 @@ public class MVCBoardDAO extends DBConnPool{
 	}
 		
 	// 비밀번호 확인 메서드 (입력한 비밀번호가 DB의 값과 일치하는 지 확인)
-	public boolean confirmPassword (String pass, String idx) {
+	public boolean confirmPassword (String pass, String idx) {   // 비밀번호와 아이디를 매개변수로 받는다. 
 		boolean isCorr = true;
 		
-		
-		
+		try {
+			// count(*) 레코드 개수 
+				// count(*) = 1 f레코드가 존재(아이디와 패스워드가 일치하는 경우)
+				// count(*) = 0 레코드가 존재하지 않는 경우 (아이디, 패스워드가 일치하지 않는 경우)
+			
+			String query = "SELECT COUNT(*) FROM pebboard WHERE pass = ? and idx = ?";
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, pass);
+			psmt.setString(2, idx);
+			rs = psmt.executeQuery();
+			
+			rs.next(); //레코드의 첫번째 레코드에 커서를 위치 시켜라
+			if(rs.getInt(1) == 0) {	// index방번호 1번방 번호 값이 0이면 false
+				isCorr = false;
+			}
+		} catch (Exception e) {
+			System.out.println("비밀번호 확인시 예외발생");
+			e.printStackTrace();
+		}
 		return isCorr;
 	}
 	

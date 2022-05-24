@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class PassController extends HttpServlet{
 
@@ -28,6 +29,27 @@ public class PassController extends HttpServlet{
 		String pass = req.getParameter("pass");
 		
 		// 비밀번호 확인 (DAO에 작업)
+		
+		MVCBoardDAO dao = new MVCBoardDAO();
+		boolean confirmed = dao.confirmPassword(pass, idx);
+		dao.close(); // close()시킴
+		
+		if(confirmed) { // 비밀번호가 일치할 때
+			if(mode.equals("edit")) {
+				HttpSession session = req.getSession();
+				session.setAttribute("pass", pass);	// pass를 Session변수에 할당
+				resp.sendRedirect("../mvc_board/edit.do?=idx" + idx);
+			}else if (mode.equals("delete")){
+				dao = new MVCBoardDAO(); // 객체 다시 만듬
+				MVCBoardDTO dto = dao.selectView(idx);
+				dao.close();
+				
+				// 삭제 이후 페이지 이동 (JavaScript) :JSFunction.java
+				
+			}
+			
+		}
+		
 	}
 	
 }
