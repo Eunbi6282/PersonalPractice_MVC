@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import utils.JSFunction;
+
 public class PassController extends HttpServlet{
 
 	@Override
@@ -45,11 +47,11 @@ public class PassController extends HttpServlet{
 				dao.close();
 				
 				// 삭제 이후 페이지 이동 (JavaScript) :JSFunction.java
-				
+				JSFunction.alertLocation(resp, "삭제되었습니다.", "../mvc_board/list.do");
 			}
-			
+		} else { // 비밀번호가 일치하지 않을 때(Java Script 실행해서 이전 페이지로 돌아가도록)
+					// 이전 페이지로 이동 (JSFunction)
+			JSFunction.alertBack(resp, "비밀번호 검증에 실패했습니다.");
 		}
-		
 	}
-	
 }

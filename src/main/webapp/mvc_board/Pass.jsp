@@ -6,6 +6,18 @@
 <head>
 <meta charset="EUC-KR">
 <title>파일 첨부형 게시판 - 비밀번호 검증 (pass)</title>
+
+	<script>
+		function validateForm(form) {
+			if(form.pass.vlaue == ""){
+				alert("비밀번호를 입력하세요");
+				form.pass.focus();
+				return false;
+			}
+		}
+	</script>
+
+
 </head>
 <body>
 	<h2>파일 첨부형 게시판 - 비밀번호 검증 (pass) </h2>
